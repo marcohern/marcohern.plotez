@@ -2,6 +2,8 @@
 
 A web application for managing terrain plots. Draw plot boundaries on an interactive map, track area measurements in square meters and hectares, and organize plots into categories.
 
+It is a demo that demosntrazte how to draw shapes on a map. Specifically a Google Maps viewportal.
+
 ## Features
 
 - **Plots** — Create, view, edit, and delete terrain plots with name, description, and category
@@ -11,14 +13,14 @@ A web application for managing terrain plots. Draw plot boundaries on an interac
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | Laravel 13, PHP 8.3+ |
-| Frontend | React 19, React Router 7 |
-| Build | Vite 8, Laravel Vite Plugin |
-| Styling | Bootstrap 5.3 |
-| HTTP client | Axios |
-| Database | SQLite (default) |
+| Layer       | Technology                  |
+| ----------- | --------------------------- |
+| Backend     | Laravel 13, PHP 8.3+        |
+| Frontend    | React 19, React Router 7    |
+| Build       | Vite 8, Laravel Vite Plugin |
+| Styling     | Bootstrap 5.3               |
+| HTTP client | Axios                       |
+| Database    | SQLite (default)            |
 
 ## Getting Started
 
