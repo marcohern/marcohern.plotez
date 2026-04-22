@@ -13,12 +13,14 @@ export default function PlotCreate() {
 
     return (
         <div>
-            <div className="flex items-center gap-3 mb-6">
-                <Link to="/plots" className="text-green-600 hover:underline text-sm">← Plots</Link>
-                <h1 className="text-2xl font-bold text-gray-800">New Plot</h1>
+            <div className="d-flex align-items-center gap-2 mb-4">
+                <Link to="/plots" className="btn btn-link text-success p-0 btn-sm">← Plots</Link>
+                <h1 className="h3 mb-0">New Plot</h1>
             </div>
-            <div className="bg-white rounded-lg shadow p-6">
-                <PlotForm onSubmit={handleSubmit} submitLabel="Create Plot" />
+            <div className="card shadow-sm">
+                <div className="card-body">
+                    <PlotForm onSubmit={handleSubmit} submitLabel="Create Plot" />
+                </div>
             </div>
         </div>
     );

@@ -8,31 +8,27 @@ import CategoryList from './pages/CategoryList';
 
 export default function Layout() {
     return (
-        <div className="min-h-screen bg-gray-50">
-            <nav className="bg-green-700 text-white shadow-md">
-                <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-8">
-                    <span className="text-2xl font-bold tracking-wide">Plotez</span>
-                    <NavLink
-                        to="/plots"
-                        className={({ isActive }) =>
-                            'text-sm font-medium hover:text-green-200 transition-colors' +
-                            (isActive ? ' underline underline-offset-4' : '')
-                        }
-                    >
-                        Plots
-                    </NavLink>
-                    <NavLink
-                        to="/categories"
-                        className={({ isActive }) =>
-                            'text-sm font-medium hover:text-green-200 transition-colors' +
-                            (isActive ? ' underline underline-offset-4' : '')
-                        }
-                    >
-                        Categories
-                    </NavLink>
+        <>
+            <nav className="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
+                <div className="container">
+                    <span className="navbar-brand fw-bold fs-4">Plotez</span>
+                    <div className="navbar-nav">
+                        <NavLink
+                            to="/plots"
+                            className={({ isActive }) => 'nav-link' + (isActive ? ' active fw-semibold' : '')}
+                        >
+                            Plots
+                        </NavLink>
+                        <NavLink
+                            to="/categories"
+                            className={({ isActive }) => 'nav-link' + (isActive ? ' active fw-semibold' : '')}
+                        >
+                            Categories
+                        </NavLink>
+                    </div>
                 </div>
             </nav>
-            <main className="max-w-7xl mx-auto px-4 py-8">
+            <main className="container py-4">
                 <Routes>
                     <Route path="/" element={<Navigate to="/plots" replace />} />
                     <Route path="/plots" element={<PlotList />} />
@@ -42,6 +38,6 @@ export default function Layout() {
                     <Route path="/categories" element={<CategoryList />} />
                 </Routes>
             </main>
-        </div>
+        </>
     );
 }

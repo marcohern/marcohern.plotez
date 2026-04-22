@@ -23,67 +23,62 @@ export default function PlotView() {
         navigate('/plots');
     }
 
-    if (loading) return <p className="text-gray-500">Loading…</p>;
-    if (error) return <p className="text-red-600">{error}</p>;
+    if (loading) return <p className="text-muted">Loading…</p>;
+    if (error) return <div className="alert alert-danger">{error}</div>;
 
     return (
         <div>
-            <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                    <Link to="/plots" className="text-green-600 hover:underline text-sm">← Plots</Link>
-                    <h1 className="text-2xl font-bold text-gray-800">{plot.name}</h1>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <div className="d-flex align-items-center gap-3">
+                    <Link to="/plots" className="btn btn-link text-success p-0 btn-sm">← Plots</Link>
+                    <h1 className="h3 mb-0">{plot.name}</h1>
                 </div>
-                <div className="flex gap-3">
-                    <Link
-                        to={`/plots/${id}/edit`}
-                        className="border border-green-600 text-green-700 px-4 py-2 rounded hover:bg-green-50 text-sm font-medium transition-colors"
-                    >
-                        Edit
-                    </Link>
-                    <button
-                        onClick={handleDelete}
-                        className="border border-red-400 text-red-600 px-4 py-2 rounded hover:bg-red-50 text-sm font-medium transition-colors"
-                    >
-                        Delete
-                    </button>
+                <div>
+                    <Link to={`/plots/${id}/edit`} className="btn btn-outline-success btn-sm me-2">Edit</Link>
+                    <button onClick={handleDelete} className="btn btn-outline-danger btn-sm">Delete</button>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
-                    <div className="bg-white rounded-lg shadow p-4">
-                        <PlotMap initialCoordinates={plot.coordinates} readOnly />
+            <div className="row g-4">
+                <div className="col-lg-8">
+                    <div className="card shadow-sm">
+                        <div className="card-body p-3">
+                            <PlotMap initialCoordinates={plot.coordinates} readOnly />
+                        </div>
                     </div>
                 </div>
 
-                <div className="space-y-4">
-                    <div className="bg-white rounded-lg shadow p-5 space-y-4">
-                        <div>
-                            <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Category</p>
-                            <p className="text-gray-800">{plot.category?.name ?? '—'}</p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Description</p>
-                            <p className="text-gray-700 whitespace-pre-wrap">{plot.description || '—'}</p>
-                        </div>
-                        <hr />
-                        <div>
-                            <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Area</p>
-                            <p className="text-2xl font-bold text-green-700">
-                                {Number(plot.area_sqm).toLocaleString(undefined, { maximumFractionDigits: 2 })}
-                                <span className="text-sm font-normal text-gray-500 ml-1">m²</span>
-                            </p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Hectares</p>
-                            <p className="text-2xl font-bold text-green-700">
-                                {Number(plot.hectares).toLocaleString(undefined, { maximumFractionDigits: 6 })}
-                                <span className="text-sm font-normal text-gray-500 ml-1">ha</span>
-                            </p>
-                        </div>
-                        <div>
-                            <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Vertices</p>
-                            <p className="text-gray-700">{plot.coordinates?.length ?? 0} points</p>
+                <div className="col-lg-4">
+                    <div className="card shadow-sm">
+                        <div className="card-body">
+                            <dl className="mb-0">
+                                <dt className="text-muted small text-uppercase mb-1">Category</dt>
+                                <dd className="mb-3">{plot.category?.name ?? '—'}</dd>
+
+                                <dt className="text-muted small text-uppercase mb-1">Description</dt>
+                                <dd className="mb-3" style={{ whiteSpace: 'pre-wrap' }}>{plot.description || '—'}</dd>
+
+                                <hr />
+
+                                <dt className="text-muted small text-uppercase mb-1">Area</dt>
+                                <dd className="mb-3">
+                                    <span className="fs-4 fw-bold text-success">
+                                        {Number(plot.area_sqm).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                                    </span>
+                                    <span className="text-muted ms-1">m²</span>
+                                </dd>
+
+                                <dt className="text-muted small text-uppercase mb-1">Hectares</dt>
+                                <dd className="mb-3">
+                                    <span className="fs-4 fw-bold text-success">
+                                        {Number(plot.hectares).toLocaleString(undefined, { maximumFractionDigits: 6 })}
+                                    </span>
+                                    <span className="text-muted ms-1">ha</span>
+                                </dd>
+
+                                <dt className="text-muted small text-uppercase mb-1">Vertices</dt>
+                                <dd className="mb-0">{plot.coordinates?.length ?? 0} points</dd>
+                            </dl>
                         </div>
                     </div>
                 </div>

@@ -57,75 +57,73 @@ export default function PlotForm({ initialData = {}, onSubmit, submitLabel = 'Sa
     }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit}>
             {errors.general && (
-                <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded text-sm">
-                    {errors.general}
-                </div>
+                <div className="alert alert-danger py-2 mb-3">{errors.general}</div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+            <div className="row g-3 mb-3">
+                <div className="col-md-6">
+                    <label className="form-label fw-medium">Name <span className="text-danger">*</span></label>
                     <input
                         type="text"
                         value={name}
                         onChange={e => setName(e.target.value)}
-                        className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.name ? 'border-red-400' : 'border-gray-300'}`}
+                        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
                     />
-                    {errors.name && <p className="text-red-600 text-xs mt-1">{errors.name}</p>}
+                    {errors.name && <div className="invalid-feedback">{errors.name}</div>}
                 </div>
 
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category *</label>
+                <div className="col-md-6">
+                    <label className="form-label fw-medium">Category <span className="text-danger">*</span></label>
                     <select
                         value={categoryId}
                         onChange={e => setCategoryId(e.target.value)}
-                        className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.category_id ? 'border-red-400' : 'border-gray-300'}`}
+                        className={`form-select ${errors.category_id ? 'is-invalid' : ''}`}
                     >
                         <option value="">— Select category —</option>
                         {categories.map(c => (
                             <option key={c.id} value={c.id}>{c.name}</option>
                         ))}
                     </select>
-                    {errors.category_id && <p className="text-red-600 text-xs mt-1">{errors.category_id}</p>}
+                    {errors.category_id && <div className="invalid-feedback">{errors.category_id}</div>}
                 </div>
             </div>
 
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <div className="mb-3">
+                <label className="form-label fw-medium">Description</label>
                 <textarea
                     value={description}
                     onChange={e => setDescription(e.target.value)}
                     rows={3}
-                    className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="form-control"
                 />
             </div>
 
-            <div className="grid grid-cols-2 gap-6">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Area (m²)</label>
+            <div className="row g-3 mb-3">
+                <div className="col-md-6">
+                    <label className="form-label fw-medium">Area (m²)</label>
                     <input
                         type="text"
                         readOnly
                         value={mapData.area_sqm ? Number(mapData.area_sqm).toLocaleString(undefined, { maximumFractionDigits: 2 }) : '—'}
-                        className="w-full border border-gray-200 bg-gray-50 rounded px-3 py-2 text-sm text-gray-600 cursor-not-allowed"
+                        className="form-control-plaintext border rounded px-3 py-2 bg-light text-muted"
                     />
                 </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Hectares</label>
+                <div className="col-md-6">
+                    <label className="form-label fw-medium">Hectares</label>
                     <input
                         type="text"
                         readOnly
                         value={mapData.hectares ? Number(mapData.hectares).toLocaleString(undefined, { maximumFractionDigits: 6 }) : '—'}
-                        className="w-full border border-gray-200 bg-gray-50 rounded px-3 py-2 text-sm text-gray-600 cursor-not-allowed"
+                        className="form-control-plaintext border rounded px-3 py-2 bg-light text-muted"
                     />
                 </div>
             </div>
 
-            <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Plot Shape *</label>
-                <p className="text-xs text-gray-500 mb-2">
+            <div className="mb-4">
+                <label className="form-label fw-medium">Plot Shape <span className="text-danger">*</span></label>
+                <p className="text-muted small mb-2">
                     Use the polygon tool on the map to draw the plot boundary. The shape must be closed and have at least 3 points.
                     You can edit the shape by dragging its vertices.
                 </p>
@@ -133,14 +131,14 @@ export default function PlotForm({ initialData = {}, onSubmit, submitLabel = 'Sa
                     initialCoordinates={mapData.coordinates}
                     onChange={setMapData}
                 />
-                {errors.coordinates && <p className="text-red-600 text-xs mt-1">{errors.coordinates}</p>}
+                {errors.coordinates && <div className="text-danger small mt-1">{errors.coordinates}</div>}
             </div>
 
-            <div className="flex justify-end gap-3 pt-2">
+            <div className="d-flex justify-content-end">
                 <button
                     type="submit"
                     disabled={submitting}
-                    className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition-colors text-sm font-medium disabled:opacity-50"
+                    className="btn btn-success px-4"
                 >
                     {submitting ? 'Saving…' : submitLabel}
                 </button>

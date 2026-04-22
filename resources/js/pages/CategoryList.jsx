@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { categories as categoriesApi } from "../api";
 
 function CategoryModal({ initial, onSave, onClose }) {
@@ -26,50 +26,51 @@ function CategoryModal({ initial, onSave, onClose }) {
     }
 
     return (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
-                <h2 className="text-lg font-bold text-gray-800 mb-4">
-                    {initial ? "Edit Category" : "New Category"}
-                </h2>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                    {errors.general && (
-                        <div className="bg-red-50 border border-red-200 text-red-700 px-3 py-2 rounded text-sm">
-                            {errors.general}
+        <div
+            className="modal d-block"
+            style={{ background: 'rgba(0,0,0,0.45)' }}
+            onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+        >
+            <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-content shadow">
+                    <div className="modal-header">
+                        <h5 className="modal-title">{initial ? "Edit Category" : "New Category"}</h5>
+                        <button type="button" className="btn-close" onClick={onClose} />
+                    </div>
+                    <form onSubmit={handleSubmit}>
+                        <div className="modal-body">
+                            {errors.general && (
+                                <div className="alert alert-danger py-2">{errors.general}</div>
+                            )}
+                            <div className="mb-3">
+                                <label className="form-label fw-medium">Name <span className="text-danger">*</span></label>
+                                <input
+                                    type="text"
+                                    value={name}
+                                    onChange={e => setName(e.target.value)}
+                                    autoFocus
+                                    className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                                />
+                                {errors.name && <div className="invalid-feedback">{errors.name}</div>}
+                            </div>
+                            <div className="mb-3">
+                                <label className="form-label fw-medium">Description</label>
+                                <textarea
+                                    value={description}
+                                    onChange={e => setDescription(e.target.value)}
+                                    rows={3}
+                                    className="form-control"
+                                />
+                            </div>
                         </div>
-                    )}
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={e => setName(e.target.value)}
-                            autoFocus
-                            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.name ? "border-red-400" : "border-gray-300"}`}
-                        />
-                        {errors.name && <p className="text-red-600 text-xs mt-1">{errors.name}</p>}
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                        <textarea
-                            value={description}
-                            onChange={e => setDescription(e.target.value)}
-                            rows={3}
-                            className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
-                        />
-                    </div>
-                    <div className="flex justify-end gap-3 pt-2">
-                        <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
-                            Cancel
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={saving}
-                            className="bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700 text-sm font-medium disabled:opacity-50"
-                        >
-                            {saving ? "Saving…" : "Save"}
-                        </button>
-                    </div>
-                </form>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
+                            <button type="submit" disabled={saving} className="btn btn-success">
+                                {saving ? "Saving…" : "Save"}
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     );
@@ -112,56 +113,55 @@ export default function CategoryList() {
         }
     }
 
-    if (loading) return <p className="text-gray-500">Loading…</p>;
+    if (loading) return <p className="text-muted">Loading…</p>;
 
     return (
         <div>
-            <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">Categories</h1>
-                <button
-                    onClick={() => setModal("create")}
-                    className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 text-sm font-medium transition-colors"
-                >
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h1 className="h3 mb-0">Categories</h1>
+                <button onClick={() => setModal("create")} className="btn btn-success btn-sm">
                     + New Category
                 </button>
             </div>
 
             {cats.length === 0 ? (
-                <div className="text-center py-16 text-gray-400">
+                <div className="text-center py-5 text-muted">
                     <p>No categories yet.</p>
-                    <button onClick={() => setModal("create")} className="text-green-600 hover:underline mt-2">
+                    <button onClick={() => setModal("create")} className="btn btn-link text-success p-0">
                         Create your first category
                     </button>
                 </div>
             ) : (
-                <div className="bg-white rounded-lg shadow overflow-hidden">
-                    <table className="w-full text-sm">
-                        <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
-                            <tr>
-                                <th className="px-4 py-3 text-left">Name</th>
-                                <th className="px-4 py-3 text-left">Description</th>
-                                <th className="px-4 py-3 text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {cats.map(cat => (
-                                <tr key={cat.id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="px-4 py-3 font-medium text-gray-800">{cat.name}</td>
-                                    <td className="px-4 py-3 text-gray-500">{cat.description || "—"}</td>
-                                    <td className="px-4 py-3 text-center space-x-3">
-                                        <button onClick={() => setModal(cat)} className="text-green-600 hover:underline">Edit</button>
-                                        <button
-                                            onClick={() => handleDelete(cat)}
-                                            disabled={deleting === cat.id}
-                                            className="text-red-600 hover:underline disabled:opacity-50"
-                                        >
-                                            {deleting === cat.id ? "Deleting…" : "Delete"}
-                                        </button>
-                                    </td>
+                <div className="card shadow-sm">
+                    <div className="table-responsive">
+                        <table className="table table-hover table-bordered align-middle mb-0">
+                            <thead className="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th className="text-center">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {cats.map(cat => (
+                                    <tr key={cat.id}>
+                                        <td className="fw-medium">{cat.name}</td>
+                                        <td className="text-muted">{cat.description || "—"}</td>
+                                        <td className="text-center">
+                                            <button onClick={() => setModal(cat)} className="btn btn-link btn-sm text-success p-0 me-2">Edit</button>
+                                            <button
+                                                onClick={() => handleDelete(cat)}
+                                                disabled={deleting === cat.id}
+                                                className="btn btn-link btn-sm text-danger p-0"
+                                            >
+                                                {deleting === cat.id ? "Deleting…" : "Delete"}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
 

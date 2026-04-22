@@ -22,17 +22,19 @@ export default function PlotEdit() {
         navigate(`/plots/${id}`);
     }
 
-    if (loading) return <p className="text-gray-500">Loading…</p>;
-    if (error) return <p className="text-red-600">{error}</p>;
+    if (loading) return <p className="text-muted">Loading…</p>;
+    if (error) return <div className="alert alert-danger">{error}</div>;
 
     return (
         <div>
-            <div className="flex items-center gap-3 mb-6">
-                <Link to={`/plots/${id}`} className="text-green-600 hover:underline text-sm">← Back</Link>
-                <h1 className="text-2xl font-bold text-gray-800">Edit: {plot.name}</h1>
+            <div className="d-flex align-items-center gap-2 mb-4">
+                <Link to={`/plots/${id}`} className="btn btn-link text-success p-0 btn-sm">← Back</Link>
+                <h1 className="h3 mb-0">Edit: {plot.name}</h1>
             </div>
-            <div className="bg-white rounded-lg shadow p-6">
-                <PlotForm initialData={plot} onSubmit={handleSubmit} submitLabel="Update Plot" />
+            <div className="card shadow-sm">
+                <div className="card-body">
+                    <PlotForm initialData={plot} onSubmit={handleSubmit} submitLabel="Update Plot" />
+                </div>
             </div>
         </div>
     );
