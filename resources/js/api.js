@@ -5,6 +5,24 @@ const api = axios.create({
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
 });
 
+api.interceptors.request.use(config => {
+    const token = localStorage.getItem('api_token');
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    return config;
+});
+
+api.interceptors.response.use(
+    res => res,
+    err => {
+        if (err.response?.status === 401) {
+            localStorage.removeItem('api_token');
+            localStorage.removeItem('api_user');
+            window.location.href = '/login';
+        }
+        return Promise.reject(err);
+    }
+);
+
 export const categories = {
     list: () => api.get('/categories').then(r => r.data),
     get: id => api.get(`/categories/${id}`).then(r => r.data),
